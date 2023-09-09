@@ -85,6 +85,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		C67C127F2AACF6920004E9D7 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
 		C6CF45CA2AACDBCD00DF814F = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +113,7 @@
 		C6CF45D52AACDBCD00DF814F /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				C67C127F2AACF6920004E9D7 /* Application */,
 				C6CF45D62AACDBCD00DF814F /* AppDelegate.swift */,
 				C67C127B2AACF40C0004E9D7 /* Models */,
 				C67C127A2AACF4060004E9D7 /* Modules */,
