@@ -7,5 +7,7 @@ target 'Calendar' do
   pod 'SnapKit'
   pod 'SwiftLint'
   pod 'RealmSwift'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
 end
