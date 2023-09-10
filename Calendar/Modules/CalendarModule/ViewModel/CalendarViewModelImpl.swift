@@ -32,7 +32,10 @@ final class CalendarViewModelImpl: CalendarViewModel {
 extension CalendarViewModelImpl {
     func sendEvent(event: CalendarEvent) {
         switch event {
-            
+        case .addEvent:
+            _output.accept(.routeToEventModule)
+        case .removeEvent:
+            break
         }
     }
 }

@@ -28,7 +28,7 @@ final class AppCoordinator: Coordinator {
     
 }
 
-// MARK: - Module Factories
+// MARK: - Modules Factory
 extension AppCoordinator {
     
     private func showCalendarModule() {
@@ -38,10 +38,24 @@ extension AppCoordinator {
         navigationController.viewControllers = [view]
         
         output.asObservable()
-            .subscribe(onNext: { output in
+            .subscribe(onNext: { [weak self] output in
                 switch output {
-                    
+                case .routeToEventModule:
+                    self?.showEventModule()
                 }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func showEventModule() {
+        let module = EventModuleAssembly.builModule(payLoad: .init(), dependencies: .init())
+        let view = module.view
+        let output = module.output
+        navigationController.pushViewController(view, animated: true)
+        
+        output.asObservable()
+            .subscribe(onNext: { output in
+                switch output {}
             })
             .disposed(by: disposeBag)
     }

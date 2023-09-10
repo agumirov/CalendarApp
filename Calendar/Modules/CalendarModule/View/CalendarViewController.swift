@@ -116,7 +116,7 @@ class CalendarViewController: BaseViewController {
     }
     
     @objc private func addEvent() {
-        print("addEvent")
+        viewModel.sendEvent(event: .addEvent)
     }
 }
 
