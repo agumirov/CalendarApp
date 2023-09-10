@@ -25,9 +25,10 @@ enum CalendarState {
 }
 
 enum CalendarEvent {
-    
+    case addEvent
+    case removeEvent
 }
 
 enum CalendarOutput {
-    
+    case routeToEventModule
 }

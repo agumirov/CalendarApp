@@ -12,6 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Properties
     var window: UIWindow?
+    private var coordinator: Coordinator?
 
     // MARK: - App lifecycle
     func application(_ application: UIApplication,
@@ -26,8 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         let navigationController = UINavigationController()
-        let coordinator = AppCoordinator(navigationController: navigationController)
+        coordinator = AppCoordinator(navigationController: navigationController)
         self.window?.rootViewController = navigationController
-        coordinator.start()
+        coordinator?.start()
     }
 }
