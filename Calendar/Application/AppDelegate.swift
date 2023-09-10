@@ -26,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         let navigationController = UINavigationController()
+        let coordinator = AppCoordinator(navigationController: navigationController)
         self.window?.rootViewController = navigationController
-        navigationController.viewControllers = [CalendarViewController()]
+        coordinator.start()
     }
 }

@@ -8,16 +8,18 @@
 import Foundation
 import RxSwift
 
-enum MenuModuleAssembly {
+enum CalendarModuleAssembly {
+    
+    // MARK: - Properties
     typealias CalendarModule = (view: CalendarViewController, output: Observable<CalendarOutput>)
-    
     struct Dependencies {}
-    
     struct PayLoad {}
     
+    // MARK: - Methods
     static func builModule(payLoad: PayLoad, dependencies: Dependencies) -> CalendarModule {
         let viewModel = CalendarViewModelImpl(input: .init())
         let viewController = CalendarViewController(viewModel: viewModel)
-        return (view: viewController, output: viewModel.output)
+        let module = (view: viewController, output: viewModel.output)
+        return module
     }
 }
