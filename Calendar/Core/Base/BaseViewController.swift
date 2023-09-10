@@ -27,8 +27,5 @@ class BaseViewController: UIViewController {
     }
     
     // MARK: - NavigationController appearance setup
-    func navigationSetup() {
-        navigationController?.isToolbarHidden = true
-        navigationController?.isNavigationBarHidden = true
-    }
+    func navigationSetup() {}
 }
