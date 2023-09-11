@@ -10,6 +10,8 @@ import SnapKit
 
 class BaseViewController: UIViewController {
     // MARK: - Properties
+    let activityIndicatorView = UIActivityIndicatorView(style: .large)
+    
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         return scrollView
