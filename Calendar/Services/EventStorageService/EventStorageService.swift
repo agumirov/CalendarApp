@@ -7,12 +7,13 @@
 
 import Foundation
 import RxSwift
+import RealmSwift
 
 protocol EventStorageService {
-    func createEvent(event: EventModel)
-    func readAllEvents()
-    func updateEvent(event: EventModel)
-    func deleteEvent(event: EventModel)
+    func createEvent(event: EventModelDomain)
+    func readAllEvents(completion: @escaping (Results<RealmEventModel>) -> Void)
+    func updateEvent(event: EventModelDomain)
+    func deleteEvent(event: RealmEventModel)
     var output: Observable<StorageServiceOutput> { get }
 }
 

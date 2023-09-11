@@ -10,6 +10,16 @@ import SnapKit
 
 final class EventView: UIView {
     // MARK: - Properties
+    var delegate: CalendarViewController?
+    
+    let emptyEventLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Нет событий"
+        label.textAlignment = .center
+        label.textColor = .gray // или другой цвет на ваш выбор
+        return label
+    }()
+    
     private lazy var eventTableView: UITableView = {
         let table = UITableView()
         table.register(EventTableViewCell.self,
@@ -29,14 +39,7 @@ final class EventView: UIView {
         return view
     }()
     
-    var items = [EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)")]
+    private lazy var events: [EventModelDomain] = []
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -76,6 +79,16 @@ final class EventView: UIView {
         isHidden = true
         layer.opacity = 0
     }
+    
+    func setData(events: [EventModelDomain]) {
+        self.events = events
+        if self.events.isEmpty {
+            eventTableView.backgroundView = emptyEventLabel
+        } else {
+            eventTableView.backgroundView = nil
+        }
+        self.eventTableView.reloadData()
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -85,8 +98,7 @@ extension EventView: UITableViewDelegate {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            items.remove(at: indexPath.row)
-            tableView.reloadData()
+            delegate?.deleteEvent(event: events[indexPath.row])
         }
     }
     
@@ -99,13 +111,15 @@ extension EventView: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 extension EventView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items.count
+        events.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EventTableViewCell.cellId) as? EventTableViewCell else { return UITableViewCell()}
-        cell.configureCell(titleLabel: items[indexPath.row].eventName,
-                           timeLabel: items[indexPath.row].eventDate)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EventTableViewCell.cellId) as? EventTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configureCell(titleLabel: events[indexPath.row].eventName,
+                           timeLabel: events[indexPath.row].eventTime)
         return cell
     }
 }

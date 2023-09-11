@@ -60,9 +60,32 @@ class BaseViewController: UIViewController {
         scrollView.addSubview(contentView)
         
         contentView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.snp.edges)
-            make.width.equalTo(scrollView.snp.width)
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
         }
+    }
+    
+    func showAlert(message: String, action: @escaping () -> Void) {
+        let alertController = UIAlertController(title: "Уведомление",
+                                                message: message,
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in action() })
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    // loading indicator methods
+    func startActivityIndicator() {
+        activityIndicatorView.center = view.center
+        activityIndicatorView.color = .gray
+        activityIndicatorView.hidesWhenStopped = true
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        activityIndicatorView.stopAnimating()
+        activityIndicatorView.removeFromSuperview()
     }
     
     // MARK: - NavigationController appearance setup

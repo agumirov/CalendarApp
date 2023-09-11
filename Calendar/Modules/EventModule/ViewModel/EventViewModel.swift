@@ -14,19 +14,19 @@ protocol EventViewModel {
     var state: Observable<EventState> { get }
     var input: InputType { get set }
     var output: Observable<EventOutput> { get }
-    func sendEvent(event: EventEvent)
+    func sendEvent(event: EventModuleEvent)
 }
 
 enum EventState {
     case initital
     case loading
-    case loaded
+    case loaded(date: String, time: String)
     case error
     case eventAdded
 }
 
-enum EventEvent {
-    case addEvent(EventModel)
+enum EventModuleEvent {
+    case addEvent(EventModelDomain)
     case userNotified
 }
 

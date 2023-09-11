@@ -40,15 +40,15 @@ extension AppCoordinator {
         output.asObservable()
             .subscribe(onNext: { [weak self] output in
                 switch output {
-                case .routeToEventModule:
-                    self?.showEventModule()
+                case let .routeToEventModule(model):
+                    self?.showEventModule(model: model)
                 }
             })
             .disposed(by: disposeBag)
     }
     
-    private func showEventModule() {
-        let module = EventModuleAssembly.builModule(payLoad: .init(),
+    private func showEventModule(model: EventModel) {
+        let module = EventModuleAssembly.builModule(payLoad: .init(date: model.eventDate),
                                                     dependencies: .init(storageService: DIContainer.standart.resolve()))
         let view = module.view
         let output = module.output

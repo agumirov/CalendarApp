@@ -15,11 +15,14 @@ enum EventModuleAssembly {
     struct Dependencies {
         let storageService: EventStorageService
     }
-    struct PayLoad {}
+    struct PayLoad {
+        let date: Date
+    }
     
     // MARK: - Methods
     static func builModule(payLoad: PayLoad, dependencies: Dependencies) -> EventModule {
-        let viewModel = EventViewModelImpl(input: .init(), storageService: dependencies.storageService)
+        let viewModel = EventViewModelImpl(input: .init(date: payLoad.date),
+                                           storageService: dependencies.storageService)
         let viewController = EventViewController(viewModel: viewModel)
         let module = (view: viewController, output: viewModel.output)
         return module

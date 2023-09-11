@@ -20,15 +20,16 @@ protocol CalendarViewModel {
 enum CalendarState {
     case initital
     case loading
-    case success
+    case success([EventModelDomain])
     case error
 }
 
 enum CalendarEvent {
-    case addEvent
-    case removeEvent
+    case addEvent(EventModel)
+    case showEvents(Date)
+    case removeEvent(EventModelDomain)
 }
 
 enum CalendarOutput {
-    case routeToEventModule
+    case routeToEventModule(EventModel)
 }
