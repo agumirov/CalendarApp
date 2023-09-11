@@ -15,7 +15,7 @@ class RealmEventModel: Object {
 }
 
 extension RealmEventModel {
-    convenience init(eventModel: EventModel) {
+    convenience init(eventModel: EventModelDomain) {
         self.init()
         self.eventId = "\(eventModel.eventId)"
         self.eventName = "\(eventModel.eventName)"

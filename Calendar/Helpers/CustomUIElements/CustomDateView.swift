@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class CustomTextField: UIView {
+final class CustomDateView: UIView {
     // MARK: - Properties
     private lazy var textField: UITextField = {
         let textField = UITextField()
@@ -40,13 +40,18 @@ final class CustomTextField: UIView {
         backgroundColor = .systemGray5
     }
     
-    func configure(placeHolder: String, fontSize: CGFloat, color: UIColor) {
+    func configure(placeHolder: String, fontSize: CGFloat, color: UIColor, isEnabled: Bool) {
         textField.placeholder = placeHolder
         textField.font = .systemFont(ofSize: fontSize)
         textField.textColor = color
+        textField.isUserInteractionEnabled = isEnabled
     }
     
     func text() -> String {
         return textField.text ?? ""
+    }
+    
+    func setText(text: String) {
+        self.textField.text = text
     }
 }

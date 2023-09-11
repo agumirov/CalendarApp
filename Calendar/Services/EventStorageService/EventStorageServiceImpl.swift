@@ -19,7 +19,7 @@ final class EventStorageServiceImpl: EventStorageService {
     private lazy var _output = PublishRelay<StorageServiceOutput>()
     
     // MARK: - CRUD    
-    func createEvent(event: EventModel) {
+    func createEvent(event: EventModelDomain) {
         do {
             try realm.write({
                 let model = RealmEventModel(eventModel: event)
@@ -31,12 +31,12 @@ final class EventStorageServiceImpl: EventStorageService {
         }
     }
     
-    func readAllEvents() {
+    func readAllEvents(completion: @escaping (Results<RealmEventModel>) -> Void) {
         let events = realm.objects(RealmEventModel.self)
-        print(events)
+        completion(events)
     }
     
-    func updateEvent(event: EventModel) {
+    func updateEvent(event: EventModelDomain) {
         do {
             try realm.write({
                 let model = RealmEventModel(eventModel: event)
@@ -48,11 +48,12 @@ final class EventStorageServiceImpl: EventStorageService {
         }
     }
     
-    func deleteEvent(event: EventModel) {
+    func deleteEvent(event: RealmEventModel) {
         do {
             try realm.write({
-                let model = RealmEventModel(eventModel: event)
-                realm.delete(model)
+                let events = realm.objects(RealmEventModel.self)
+                let event = events.filter( "eventId=%@", event.eventId)
+                realm.delete(event)
                 _output.accept(.success)
             })
         } catch let(error) {

@@ -24,20 +24,22 @@ final class EventViewModelImpl: EventViewModel {
     private let storageService: EventStorageService
     private let disposeBag = DisposeBag()
     
-    struct Input {}
+    struct Input {
+        let date: Date
+    }
     
     // MARK: - Init
     init(input: Input, storageService: EventStorageService) {
         self.input = input
         self.storageService = storageService
         subscribe()
+        loadData()
     }
     
     private func subscribe() {
         storageService.output
             .asObservable()
             .bind(onNext: { [weak self] output in
-                self?._state.accept(.loaded)
                 switch output {
                 case .success:
                     self?._state.accept(.eventAdded)
@@ -47,10 +49,16 @@ final class EventViewModelImpl: EventViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
+    private func loadData() {
+        let date = DateTimeFormatterService.shared.formatDateToString(input.date)
+        let time = DateTimeFormatterService.shared.formatTimeToString(input.date)
+        self._state.accept(.loaded(date: date, time: time))
+    }
 }
 
 extension EventViewModelImpl {
-    func sendEvent(event: EventEvent) {
+    func sendEvent(event: EventModuleEvent) {
         switch event {
         case let .addEvent(event):
             self._state.accept(.loading)

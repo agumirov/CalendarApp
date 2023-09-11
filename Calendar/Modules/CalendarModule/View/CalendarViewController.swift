@@ -12,6 +12,10 @@ import RxSwift
 class CalendarViewController: BaseViewController {
     
     // MARK: - Properties
+    private let viewModel: any CalendarViewModel
+    private let disposeBag = DisposeBag()
+    private lazy var eventDate: Date = .now
+    
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.distribution = .fill
@@ -38,11 +42,9 @@ class CalendarViewController: BaseViewController {
         let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeDown))
         swipeDownGesture.direction = .down
         eventView.addGestureRecognizer(swipeDownGesture)
+        eventView.delegate = self
         return eventView
     }()
-    
-    private let viewModel: any CalendarViewModel
-    private let disposeBag = DisposeBag()
     
     // MARK: - Init
     init(viewModel: any CalendarViewModel) {
@@ -61,6 +63,12 @@ class CalendarViewController: BaseViewController {
         setupAppearance()
     }
     
+    // MARK: - ViewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.sendEvent(event: .showEvents(eventDate))
+    }
+    
     // MARK: - SetupUI
     override func setupUI() {
         super.setupUI()
@@ -76,7 +84,7 @@ class CalendarViewController: BaseViewController {
     override func navigationSetup() {
         super.navigationSetup()
         navigationController?.isNavigationBarHidden = false
-        navigationController?.isToolbarHidden = false
+        navigationController?.isToolbarHidden = true
         
         let addEventButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addEvent))
         navigationItem.rightBarButtonItem = addEventButton
@@ -84,30 +92,13 @@ class CalendarViewController: BaseViewController {
     
     private func setupAppearance() {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor(hex: "#00FF00", alpha: 0.3).cgColor,
-                                UIColor(hex: "#0000FF", alpha: 0.3).cgColor]
+        gradientLayer.colors = [UIColor(hex: Constants.gradiendStartColor, alpha: 0.3).cgColor,
+                                UIColor(hex: Constants.gradientEndColor, alpha: 0.3).cgColor]
         gradientLayer.frame = view.bounds
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     // MARK: - Private methods
-    private func subscribe() {
-        viewModel.state.asObservable()
-            .subscribe(onNext: { state in
-                switch state {
-                case .initital:
-                    break
-                case .loading:
-                    break
-                case .success:
-                    break
-                case .error:
-                    break
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
     @objc private func handleSwipeDown() {
         UIView.animate(withDuration: 1) { [weak self] in
             self?.eventView.isHidden = true
@@ -116,13 +107,23 @@ class CalendarViewController: BaseViewController {
     }
     
     @objc private func addEvent() {
-        viewModel.sendEvent(event: .addEvent)
+        viewModel.sendEvent(event: .addEvent(EventModel(eventId: UUID(),
+                                                        eventName: "",
+                                                        eventDate: eventDate,
+                                                        eventTime: .now)))
+    }
+    
+    func deleteEvent(event: EventModelDomain) {
+        viewModel.sendEvent(event: .removeEvent(event))
+        viewModel.sendEvent(event: .showEvents(eventDate))
     }
 }
 
 // MARK: - UICalendarSelectionSingleDateDelegate
 extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
+        eventDate = dateComponents?.date ?? .now
+        viewModel.sendEvent(event: .showEvents(eventDate))
         if eventView.isHidden {
             UIView.animate(withDuration: 1) { [weak self] in
                 self?.eventView.layer.opacity = 1
@@ -132,6 +133,33 @@ extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
                     make.bottom.equalToSuperview()
                 }
             }
+        }
+    }
+}
+
+// MARK: - Event and State handler
+extension CalendarViewController {
+    private func subscribe() {
+        viewModel.state.asObservable()
+            .subscribe(onNext: { [weak self] state in
+                self?.handleState(state: state)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func handleState(state: CalendarState) {
+        switch state {
+        case .initital:
+            break
+        case .loading:
+            self.contentView.layer.opacity = 0.3
+            self.startActivityIndicator()
+        case let .success(events):
+            self.contentView.layer.opacity = 1
+            self.stopActivityIndicator()
+            self.eventView.setData(events: events)
+        case .error:
+            showAlert(message: "Произошла ошибка", action: {})
         }
     }
 }

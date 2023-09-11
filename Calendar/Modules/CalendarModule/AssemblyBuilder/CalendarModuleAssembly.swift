@@ -17,7 +17,7 @@ enum CalendarModuleAssembly {
     
     // MARK: - Methods
     static func builModule(payLoad: PayLoad, dependencies: Dependencies) -> CalendarModule {
-        let viewModel = CalendarViewModelImpl(input: .init())
+        let viewModel = CalendarViewModelImpl(input: .init(), storageService: DIContainer.standart.resolve())
         let viewController = CalendarViewController(viewModel: viewModel)
         let module = (view: viewController, output: viewModel.output)
         return module
