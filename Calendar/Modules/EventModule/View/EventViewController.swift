@@ -143,7 +143,13 @@ final class EventViewController: BaseViewController {
     
     // MARK: - Private methods
     @objc private func confirmAddingEvent() {
-        print("confirm")
+        let eventName = eventTitleField.text()
+        let eventDate = dateField.text()
+        let eventTime = eventTimeField.text()
+        viewModel.sendEvent(event: .addEvent(EventModel(eventId: UUID(),
+                                                        eventName: eventName,
+                                                        eventDate: eventDate,
+                                                        eventTime: eventTime)))
     }
 }
 

@@ -24,6 +24,9 @@
 		C67C12B32AAE75840004E9D7 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67C12B22AAE75840004E9D7 /* EventViewController.swift */; };
 		C67C12B62AAE84830004E9D7 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67C12B52AAE84830004E9D7 /* CustomTextField.swift */; };
 		C67C12B82AAE8DFE0004E9D7 /* RealmEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67C12B72AAE8DFE0004E9D7 /* RealmEventModel.swift */; };
+		C67C12BC2AAE8F910004E9D7 /* EventStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67C12BB2AAE8F910004E9D7 /* EventStorageService.swift */; };
+		C67C12BE2AAE8FF10004E9D7 /* EventStorageServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67C12BD2AAE8FF10004E9D7 /* EventStorageServiceImpl.swift */; };
+		C67C12C12AAE9CD20004E9D7 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67C12C02AAE9CD20004E9D7 /* DIContainer.swift */; };
 		C6CF45D72AACDBCD00DF814F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CF45D62AACDBCD00DF814F /* AppDelegate.swift */; };
 		C6CF45DB2AACDBCD00DF814F /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CF45DA2AACDBCD00DF814F /* CalendarViewController.swift */; };
 		C6CF45E02AACDBCE00DF814F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6CF45DF2AACDBCE00DF814F /* Assets.xcassets */; };
@@ -48,6 +51,9 @@
 		C67C12B22AAE75840004E9D7 /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		C67C12B52AAE84830004E9D7 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		C67C12B72AAE8DFE0004E9D7 /* RealmEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmEventModel.swift; sourceTree = "<group>"; };
+		C67C12BB2AAE8F910004E9D7 /* EventStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStorageService.swift; sourceTree = "<group>"; };
+		C67C12BD2AAE8FF10004E9D7 /* EventStorageServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStorageServiceImpl.swift; sourceTree = "<group>"; };
+		C67C12C02AAE9CD20004E9D7 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		C6CF45D32AACDBCD00DF814F /* Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6CF45D62AACDBCD00DF814F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6CF45DA2AACDBCD00DF814F /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +134,7 @@
 		C67C12802AACFB4A0004E9D7 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				C67C127F2AACF6920004E9D7 /* Application */,
 				C67C12812AACFB680004E9D7 /* Base */,
 			);
 			path = Core;
@@ -227,6 +234,32 @@
 			path = CustomUIElements;
 			sourceTree = "<group>";
 		};
+		C67C12B92AAE8F7A0004E9D7 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C67C12BF2AAE9CCB0004E9D7 /* DIContainer */,
+				C67C12BA2AAE8F810004E9D7 /* EventStorageService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C67C12BA2AAE8F810004E9D7 /* EventStorageService */ = {
+			isa = PBXGroup;
+			children = (
+				C67C12BB2AAE8F910004E9D7 /* EventStorageService.swift */,
+				C67C12BD2AAE8FF10004E9D7 /* EventStorageServiceImpl.swift */,
+			);
+			path = EventStorageService;
+			sourceTree = "<group>";
+		};
+		C67C12BF2AAE9CCB0004E9D7 /* DIContainer */ = {
+			isa = PBXGroup;
+			children = (
+				C67C12C02AAE9CD20004E9D7 /* DIContainer.swift */,
+			);
+			path = DIContainer;
+			sourceTree = "<group>";
+		};
 		C6CF45CA2AACDBCD00DF814F = {
 			isa = PBXGroup;
 			children = (
@@ -249,8 +282,8 @@
 			isa = PBXGroup;
 			children = (
 				C67C12802AACFB4A0004E9D7 /* Core */,
-				C67C127F2AACF6920004E9D7 /* Application */,
 				C67C127B2AACF40C0004E9D7 /* Models */,
+				C67C12B92AAE8F7A0004E9D7 /* Services */,
 				C67C127A2AACF4060004E9D7 /* Modules */,
 				C67C12A42AAE71A80004E9D7 /* Helpers */,
 				C6CF45EA2AACDBEA00DF814F /* Resources */,
@@ -417,6 +450,8 @@
 				C67C12A72AAE71B70004E9D7 /* UIColor+Extension.swift in Sources */,
 				C67C12B32AAE75840004E9D7 /* EventViewController.swift in Sources */,
 				C67C12AF2AAE75480004E9D7 /* EventViewModel.swift in Sources */,
+				C67C12C12AAE9CD20004E9D7 /* DIContainer.swift in Sources */,
+				C67C12BC2AAE8F910004E9D7 /* EventStorageService.swift in Sources */,
 				C67C128A2AAD00110004E9D7 /* EventModel.swift in Sources */,
 				C67C12B62AAE84830004E9D7 /* CustomTextField.swift in Sources */,
 				C67C129B2AAD0BE80004E9D7 /* CalendarViewModelImpl.swift in Sources */,
@@ -427,6 +462,7 @@
 				C6CF45D72AACDBCD00DF814F /* AppDelegate.swift in Sources */,
 				C67C12832AACFB990004E9D7 /* Coordinator.swift in Sources */,
 				C67C12B82AAE8DFE0004E9D7 /* RealmEventModel.swift in Sources */,
+				C67C12BE2AAE8FF10004E9D7 /* EventStorageServiceImpl.swift in Sources */,
 				C67C12A02AAD20FA0004E9D7 /* EventView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

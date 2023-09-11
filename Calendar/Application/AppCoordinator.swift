@@ -48,7 +48,8 @@ extension AppCoordinator {
     }
     
     private func showEventModule() {
-        let module = EventModuleAssembly.builModule(payLoad: .init(), dependencies: .init())
+        let module = EventModuleAssembly.builModule(payLoad: .init(),
+                                                    dependencies: .init(storageService: <#EventStorageService#>))
         let view = module.view
         let output = module.output
         navigationController.pushViewController(view, animated: true)

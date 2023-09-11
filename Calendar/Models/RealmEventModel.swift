@@ -8,15 +8,18 @@
 import RealmSwift
 
 class RealmEventModel: Object {
-    @objc dynamic var eventId: UUID
-    @objc dynamic var eventName: String
-    @objc dynamic var eventDate: Date
-    @objc dynamic var eventTime: Date
-    
-    init(eventModel: EventModel) {
-        self.eventId = eventModel.eventId
-        self.eventName = eventModel.eventName
-        self.eventDate = eventModel.eventDate
-        self.eventTime = eventModel.eventTime
+    @objc dynamic var eventId = ""
+    @objc dynamic var eventName = ""
+    @objc dynamic var eventDate = ""
+    @objc dynamic var eventTime = ""
+}
+
+extension RealmEventModel {
+    convenience init(eventModel: EventModel) {
+        self.init()
+        self.eventId = "\(eventModel.eventId)"
+        self.eventName = "\(eventModel.eventName)"
+        self.eventDate = "\(eventModel.eventDate)"
+        self.eventTime = "\(eventModel.eventTime)"
     }
 }

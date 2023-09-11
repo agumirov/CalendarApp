@@ -45,4 +45,8 @@ final class CustomTextField: UIView {
         textField.font = .systemFont(ofSize: fontSize)
         textField.textColor = color
     }
+    
+    func text() -> String {
+        return textField.text ?? ""
+    }
 }

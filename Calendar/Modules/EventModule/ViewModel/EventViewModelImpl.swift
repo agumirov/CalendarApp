@@ -21,18 +21,22 @@ final class EventViewModelImpl: EventViewModel {
     }
     private lazy var _output = PublishRelay<EventOutput>()
     var input: Input
+    private let storageService: EventStorageService
+    
     struct Input {}
     
     // MARK: - Init
-    init(input: Input) {
+    init(input: Input, storageService: EventStorageService) {
         self.input = input
+        self.storageService = storageService
     }
 }
 
 extension EventViewModelImpl {
     func sendEvent(event: EventEvent) {
         switch event {
-            
+        case let .addEvent(event):
+            storageService.createEvent(event: event)
         }
     }
 }

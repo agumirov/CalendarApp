@@ -10,6 +10,6 @@ import Foundation
 struct EventModel {
     let eventId: UUID
     let eventName: String
-    let eventDate: Date
-    let eventTime: Date
+    let eventDate: String
+    let eventTime: String
 }

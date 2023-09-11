@@ -25,10 +25,7 @@ enum EventState {
 }
 
 enum EventEvent {
-    
+    case addEvent(EventModel)
 }
 
-enum EventOutput {
-    
-}
-
+enum EventOutput {}

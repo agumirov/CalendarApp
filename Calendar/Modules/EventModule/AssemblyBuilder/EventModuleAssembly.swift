@@ -12,15 +12,16 @@ enum EventModuleAssembly {
     
     // MARK: - Properties
     typealias EventModule = (view: EventViewController, output: Observable<EventOutput>)
-    struct Dependencies {}
+    struct Dependencies {
+        let storageService: EventStorageService
+    }
     struct PayLoad {}
     
     // MARK: - Methods
     static func builModule(payLoad: PayLoad, dependencies: Dependencies) -> EventModule {
-        let viewModel = EventViewModelImpl(input: .init())
+        let viewModel = EventViewModelImpl(input: .init(), storageService: dependencies.storageService)
         let viewController = EventViewController(viewModel: viewModel)
         let module = (view: viewController, output: viewModel.output)
         return module
     }
 }
-
