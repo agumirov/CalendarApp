@@ -29,14 +29,14 @@ final class EventView: UIView {
         return view
     }()
     
-    var items = [EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now),
-                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: .now, eventTime: .now)]
+    var items = [EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)"),
+                 EventModel(eventId: .init(), eventName: "\(Date.now)", eventDate: "\(Date.now)", eventTime: "\(Date.now)")]
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -104,11 +104,8 @@ extension EventView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EventTableViewCell.cellId) as? EventTableViewCell else { return UITableViewCell()}
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        let formattedTime = dateFormatter.string(from: items[indexPath.row].eventDate)
         cell.configureCell(titleLabel: items[indexPath.row].eventName,
-                           timeLabel: "\(formattedTime)")
+                           timeLabel: items[indexPath.row].eventDate)
         return cell
     }
 }

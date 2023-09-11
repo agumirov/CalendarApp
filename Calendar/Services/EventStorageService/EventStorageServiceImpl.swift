@@ -12,12 +12,11 @@ import RxCocoa
 
 final class EventStorageServiceImpl: EventStorageService {
     // MARK: - Properties
-    static var shared = EventStorageServiceImpl()
     var realm = try! Realm()
     var output: Observable<StorageServiceOutput> {
         _output.asObservable()
     }
-    var _output = PublishRelay<StorageServiceOutput>()
+    private lazy var _output = PublishRelay<StorageServiceOutput>()
     
     // MARK: - CRUD    
     func createEvent(event: EventModel) {
@@ -47,7 +46,6 @@ final class EventStorageServiceImpl: EventStorageService {
         } catch let(error) {
             _output.accept(.error("Error \(error)"))
         }
-        
     }
     
     func deleteEvent(event: EventModel) {

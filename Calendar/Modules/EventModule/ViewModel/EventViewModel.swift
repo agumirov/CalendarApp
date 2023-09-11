@@ -20,12 +20,16 @@ protocol EventViewModel {
 enum EventState {
     case initital
     case loading
-    case success
+    case loaded
     case error
+    case eventAdded
 }
 
 enum EventEvent {
     case addEvent(EventModel)
+    case userNotified
 }
 
-enum EventOutput {}
+enum EventOutput {
+    case routeToCalendar
+}

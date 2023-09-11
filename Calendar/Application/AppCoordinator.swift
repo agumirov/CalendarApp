@@ -49,16 +49,18 @@ extension AppCoordinator {
     
     private func showEventModule() {
         let module = EventModuleAssembly.builModule(payLoad: .init(),
-                                                    dependencies: .init(storageService: <#EventStorageService#>))
+                                                    dependencies: .init(storageService: DIContainer.standart.resolve()))
         let view = module.view
         let output = module.output
         navigationController.pushViewController(view, animated: true)
         
         output.asObservable()
-            .subscribe(onNext: { output in
-                switch output {}
+            .subscribe(onNext: {  [weak self] output in
+                switch output {
+                case .routeToCalendar:
+                    self?.navigationController.popViewController(animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
 }
-

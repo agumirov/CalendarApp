@@ -7,9 +7,12 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class EventViewController: BaseViewController {
     // MARK: - Properties
+    private let disposeBag = DisposeBag()
     // Title elements
     private lazy var eventTitleLabel: UILabel = {
         let label = UILabel()
@@ -39,7 +42,7 @@ final class EventViewController: BaseViewController {
         view.configure(placeHolder: "Date", fontSize: 24, color: .black)
         return view
     }()
-        
+    
     // Time elements
     private lazy var eventTimeLabel: UILabel = {
         let label = UILabel()
@@ -70,6 +73,7 @@ final class EventViewController: BaseViewController {
     // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        subscribeOnVM()
     }
     
     override func navigationSetup() {
@@ -143,6 +147,10 @@ final class EventViewController: BaseViewController {
     
     // MARK: - Private methods
     @objc private func confirmAddingEvent() {
+        if eventTitleField.text().isEmpty {
+            showAlert(message: "Введите название", action: {})
+            return
+        }
         let eventName = eventTitleField.text()
         let eventDate = dateField.text()
         let eventTime = eventTimeField.text()
@@ -150,6 +158,58 @@ final class EventViewController: BaseViewController {
                                                         eventName: eventName,
                                                         eventDate: eventDate,
                                                         eventTime: eventTime)))
+    }
+    
+    private func startActivityIndicator() {
+        activityIndicatorView.center = view.center
+        activityIndicatorView.color = .gray
+        activityIndicatorView.hidesWhenStopped = true
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+    }
+    
+    private func stopActivityIndicator() {
+        activityIndicatorView.stopAnimating()
+        activityIndicatorView.removeFromSuperview()
+    }
+    
+    private func showAlert(message: String, action: @escaping () -> Void) {
+        let alertController = UIAlertController(title: "Уведомление",
+                                                message: message,
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in action() })
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Event and State handler
+extension EventViewController {
+    private func subscribeOnVM() {
+        viewModel.state.asObservable()
+            .subscribe(onNext: { [weak self] state in
+                self?.handleState(state: state)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func handleState(state: EventState) {
+        switch state {
+        case .initital:
+            break
+        case .loading:
+            self.contentView.layer.opacity = 0.3
+            self.startActivityIndicator()
+        case .loaded:
+            self.contentView.layer.opacity = 1
+            self.stopActivityIndicator()
+        case .error:
+            self.showAlert(message: "Произошла ошибка, попробуйте снова", action: {})
+        case .eventAdded:
+            self.showAlert(message: "Событие добавлено", action: {
+                self.viewModel.sendEvent(event: .userNotified)
+            })
+        }
     }
 }
 
